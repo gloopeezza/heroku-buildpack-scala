@@ -139,17 +139,56 @@ EOF
   assertCapturedEquals "${EXPECTED_VERSION}"
 }
 
-testGetSbtVersionWithTrailingLetters()
+testGetSbtVersionWithReleaseCandidate()
 {
   mkdir -p ${BUILD_DIR}/project
   cat > ${BUILD_DIR}/project/build.properties <<EOF
-sbt.version   =    ${EXPECTED_VERSION}RC    
+sbt.version   =    ${EXPECTED_VERSION}-RC3
 EOF
 
   capture get_supported_sbt_version ${BUILD_DIR}
 
   assertCapturedSuccess
-  assertCapturedEquals ""
+  assertCapturedEquals "${EXPECTED_VERSION}-RC3"
+}
+
+testGetSbtVersionWithBeta()
+{
+  mkdir -p ${BUILD_DIR}/project
+  cat > ${BUILD_DIR}/project/build.properties <<EOF
+sbt.version   =    ${EXPECTED_VERSION}-Beta1
+EOF
+
+  capture get_supported_sbt_version ${BUILD_DIR}
+
+  assertCapturedSuccess
+  assertCapturedEquals "${EXPECTED_VERSION}-Beta1"
+}
+
+testGetSbtVersionWithMServer()
+{
+  mkdir -p ${BUILD_DIR}/project
+  cat > ${BUILD_DIR}/project/build.properties <<EOF
+sbt.version   =    ${EXPECTED_VERSION}-MSERVER-1
+EOF
+
+  capture get_supported_sbt_version ${BUILD_DIR}
+
+  assertCapturedSuccess
+  assertCapturedEquals "${EXPECTED_VERSION}-MSERVER-1"
+}
+
+testGetSbtVersionDateNumbers()
+{
+  mkdir -p ${BUILD_DIR}/project
+  cat > ${BUILD_DIR}/project/build.properties <<EOF
+sbt.version   =    ${EXPECTED_VERSION}-20140730-062239
+EOF
+
+  capture get_supported_sbt_version ${BUILD_DIR}
+
+  assertCapturedSuccess
+  assertCapturedEquals "${EXPECTED_VERSION}-20140730-062239"
 }
 
 testGetSbtVersionWithNoSpaces() {
